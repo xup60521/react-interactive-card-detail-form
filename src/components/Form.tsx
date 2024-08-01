@@ -45,6 +45,7 @@ export default function Form({
                                 ? "border-c_error_red"
                                 : "border-c_Light_grayish_violet"
                         }`}
+                        placeholder="e.g. Jane Appleseed"
                     />
                     <ErrorMessage
                         errors={errors}
@@ -79,6 +80,7 @@ export default function Form({
                                 ? "border-c_error_red"
                                 : "border-c_Light_grayish_violet"
                         }`}
+                        placeholder="e.g. 1234 5678 9123 0000"
                     />
                     <ErrorMessage
                         errors={errors}
@@ -129,6 +131,7 @@ export default function Form({
                                             ? "border-c_error_red"
                                             : "border-c_Light_grayish_violet"
                                     }`}
+                                    placeholder="MM"
                                 />
                                 <ErrorMessage
                                     errors={errors}
@@ -165,6 +168,7 @@ export default function Form({
                                             ? "border-c_error_red"
                                             : "border-c_Light_grayish_violet"
                                     }`}
+                                    placeholder="YY"
                                 />
                                 <ErrorMessage
                                     errors={errors}
@@ -210,6 +214,7 @@ export default function Form({
                                     ? "border-c_error_red"
                                     : "border-c_Light_grayish_violet"
                             }`}
+                            placeholder="e.g. 123"
                         />
                         <ErrorMessage
                             errors={errors}
