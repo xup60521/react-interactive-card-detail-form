@@ -20,16 +20,13 @@ export default function Card({
             >
                 <img src={Logo} alt="logo" className="h-[25%] w-fit" />
                 <span className="flex-grow py-[2vh] text-[3.5vh] flex items-end font-medium tracking-[0.43vh] font-grotesk text-white">
-                    {cardNumber}
+                    {cardNumber?.replace(/\s/g, "").replace(/(.{4})/g, "$1 ")}
                 </span>
                 <div className="flex justify-between items-center">
                     <span className="font-grotesk text-white tracking-widest text-[1.75vh]">
-                        {name.toUpperCase()}
+                        {name?.toUpperCase()}
                     </span>
-                    <span className="font-grotesk text-white tracking-widest text-[1.75vh]">{`${exp.mm.padStart(
-                        2,
-                        "0"
-                    )}/${exp.yy} `}</span>
+                    <span className="font-grotesk text-white tracking-widest text-[1.75vh]">{`${exp.mm}/${exp.yy} `}</span>
                 </div>
             </div>
         </div>

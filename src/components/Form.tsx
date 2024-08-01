@@ -1,61 +1,232 @@
-export default function Form() {
+import { ErrorMessage } from "@hookform/error-message";
+import { motion } from "framer-motion";
+import { SubmitHandler, type UseFormReturn } from "react-hook-form";
+import { type FormInput } from "../utils";
+
+export default function Form({
+    form,
+    setIsComplete,
+}: {
+    form: UseFormReturn<FormInput, unknown, undefined>;
+    setIsComplete: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+    const {
+        handleSubmit,
+        register,
+        formState: { errors },
+    } = form;
+    const onSubmit: SubmitHandler<FormInput> = () => setIsComplete(true);
+
     return (
-        <div className="flex flex-col lg:w-[25rem] lg:-translate-x-[20%]">
-            <label
-                htmlFor="cardholder-name"
-                className="py-2 font-grotesk text-xs font-bold text-gray-500 tracking-widest"
+        <motion.div
+            className="lg:w-[24rem]  absolute"
+            initial={{x: 30, opacity: 0}}
+            animate={{x: 0, opacity: 1}}
+            exit={{x: -30, opacity: 0}}
+            transition={{duration: 0.75, type: "spring"}}
+        >
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex flex-col w-full lg:-translate-x-[10%]"
             >
-                CARDHOLDER NAME
-            </label>
-            <input
-                type="text"
-                id="cardholder-name"
-                className="mb-6 font-grotesk rounded-lg border-[1px] border-c_Light_grayish_violet px-4 py-2"
-            />
-            <div className="flex flex-col">
-                <label
-                    htmlFor="card-number"
-                    className="py-2 font-grotesk text-xs font-bold text-gray-500 tracking-widest"
-                >
-                    CARDHOLDER NAME
-                </label>
-                <input
-                    type="text"
-                    id="card-number"
-                    className="mb-6 font-grotesk rounded-lg border-[1px] border-c_Light_grayish_violet px-4 py-2"
-                />
-            </div>
-            <div className="flex gap-4 mb-6">
-                <div className="flex flex-col">
-                    <span className="py-2 font-grotesk text-xs font-bold text-gray-500 tracking-widest">
-                        EXP. DATE (MM/YY)
-                    </span>
-                    <div className="flex gap-2">
-                        <input
-                            type="text"
-                            className="w-[5rem] font-grotesk rounded-lg border-[1px] border-c_Light_grayish_violet px-4 py-2"
-                        />
-                        <input
-                            type="text"
-                            className="w-[5rem] font-grotesk rounded-lg border-[1px] border-c_Light_grayish_violet px-4 py-2"
-                        />
-                    </div>
-                </div>
-                <div className="flex flex-col flex-grow">
+                <div className="flex flex-col relative">
                     <label
-                        htmlFor="cvc"
+                        htmlFor="cardholder-name"
                         className="py-2 font-grotesk text-xs font-bold text-gray-500 tracking-widest"
                     >
-                        CVC
+                        CARDHOLDER NAME
                     </label>
                     <input
                         type="text"
-                        id="cvc"
-                        className="flex-grow font-grotesk rounded-lg border-[1px] border-c_Light_grayish_violet px-4 py-2"
+                        id="cardholder-name"
+                        {...register("name", { required: "Name is required" })}
+                        className={`mb-8 outline-c_Dark_grayish_violet font-grotesk rounded-lg border-[1px] px-4 py-2 ${
+                            "name" in errors
+                                ? "border-c_error_red"
+                                : "border-c_Light_grayish_violet"
+                        }`}
+                    />
+                    <ErrorMessage
+                        errors={errors}
+                        name="name"
+                        render={({ message }) => (
+                            <p className="absolute bottom-2 text-[0.7rem] font-grotesk text-c_error_red font-medium">
+                                {message}
+                            </p>
+                        )}
                     />
                 </div>
-            </div>
-            <button className="w-full bg-c_Very_dark_violet py-3 rounded-lg transition font-grotesk text-white hover:">Confirm</button>
-        </div>
+                <div className="flex flex-col relative">
+                    <label
+                        htmlFor="card-number"
+                        className="py-2 font-grotesk text-xs font-bold text-gray-500 tracking-widest"
+                    >
+                        CARD NUMBER
+                    </label>
+                    <input
+                        type="text"
+                        id="card-number"
+                        maxLength={19}
+                        {...register("number", {
+                            required: "card number is required",
+                            pattern: {
+                                value: /[\d]{4}(\s)?[\d]{4}(\s)?[\d]{4}(\s)?[\d]{4}/,
+                                message: "Wrong format.",
+                            },
+                        })}
+                        className={`mb-8 outline-c_Dark_grayish_violet font-grotesk rounded-lg border-[1px] px-4 py-2 ${
+                            "number" in errors
+                                ? "border-c_error_red"
+                                : "border-c_Light_grayish_violet"
+                        }`}
+                    />
+                    <ErrorMessage
+                        errors={errors}
+                        name="number"
+                        render={({ message }) => (
+                            <p className="absolute bottom-2 text-[0.7rem] font-grotesk text-c_error_red font-medium">
+                                {message}
+                            </p>
+                        )}
+                    />
+                </div>
+                <div className="flex gap-4 relative">
+                    <div className="flex flex-col">
+                        <span className="py-2 font-grotesk text-xs font-bold text-gray-500 tracking-widest">
+                            EXP. DATE (MM/YY)
+                        </span>
+                        <div className="flex gap-2">
+                            <div className="flex flex-col">
+                                <input
+                                    type="text"
+                                    {...register("mm", {
+                                        required: "Can't be blank",
+                                        pattern: {
+                                            value: /[\d]{2}/,
+                                            message: "Wrong format",
+                                        },
+                                        min: {
+                                            value: 1,
+                                            message: "Invalid month",
+                                        },
+                                        max: {
+                                            value: 12,
+                                            message: "Invalid month",
+                                        },
+                                        maxLength: {
+                                            value: 2,
+                                            message: "Wrong format",
+                                        },
+                                        minLength: {
+                                            value: 2,
+                                            message: "Wrong format",
+                                        },
+                                    })}
+                                    maxLength={2}
+                                    minLength={2}
+                                    className={`w-[5rem] outline-c_Dark_grayish_violet mb-8 font-grotesk rounded-lg border-[1px] px-4 py-2 ${
+                                        "mm" in errors
+                                            ? "border-c_error_red"
+                                            : "border-c_Light_grayish_violet"
+                                    }`}
+                                />
+                                <ErrorMessage
+                                    errors={errors}
+                                    name="mm"
+                                    render={({ message }) => (
+                                        <p className="absolute bottom-2 text-[0.7rem] font-grotesk text-c_error_red font-medium">
+                                            {message}
+                                        </p>
+                                    )}
+                                />
+                            </div>
+                            <div className="flex flex-col">
+                                <input
+                                    type="text"
+                                    {...register("yy", {
+                                        required: "Can't be blank",
+                                        pattern: {
+                                            value: /[\d]{2}/,
+                                            message: "Wrong format",
+                                        },
+                                        maxLength: {
+                                            value: 2,
+                                            message: "Wrong format",
+                                        },
+                                        minLength: {
+                                            value: 2,
+                                            message: "Wrong format",
+                                        },
+                                    })}
+                                    maxLength={2}
+                                    minLength={2}
+                                    className={`w-[5rem] outline-c_Dark_grayish_violet mb-8 font-grotesk rounded-lg border-[1px] px-4 py-2 ${
+                                        "yy" in errors
+                                            ? "border-c_error_red"
+                                            : "border-c_Light_grayish_violet"
+                                    }`}
+                                />
+                                <ErrorMessage
+                                    errors={errors}
+                                    name="yy"
+                                    render={({ message }) => (
+                                        <p className="absolute bottom-2 text-[0.7rem] font-grotesk text-c_error_red font-medium">
+                                            {message}
+                                        </p>
+                                    )}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex flex-col flex-grow relative">
+                        <label
+                            htmlFor="cvc"
+                            className="py-2 font-grotesk text-xs font-bold text-gray-500 tracking-widest"
+                        >
+                            CVC
+                        </label>
+                        <input
+                            type="text"
+                            id="cvc"
+                            {...register("cvc", {
+                                required: "Can't be blank",
+                                pattern: {
+                                    value: /[\d]{3}/,
+                                    message: "Wrong format",
+                                },
+                                maxLength: {
+                                    value: 3,
+                                    message: "Wrong format",
+                                },
+                                minLength: {
+                                    value: 3,
+                                    message: "Wrong format",
+                                },
+                            })}
+                            maxLength={3}
+                            minLength={3}
+                            className={`flex-grow outline-c_Dark_grayish_violet mb-8 font-grotesk rounded-lg border-[1px] px-4 py-2 ${
+                                "cvc" in errors
+                                    ? "border-c_error_red"
+                                    : "border-c_Light_grayish_violet"
+                            }`}
+                        />
+                        <ErrorMessage
+                            errors={errors}
+                            name="cvc"
+                            render={({ message }) => (
+                                <p className="absolute bottom-2 text-[0.7rem] font-grotesk text-c_error_red font-medium">
+                                    {message}
+                                </p>
+                            )}
+                        />
+                    </div>
+                </div>
+                <input
+                    type="submit"
+                    className="w-full my-2 cursor-pointer bg-c_Very_dark_violet py-3 rounded-lg transition font-grotesk text-white hover:"
+                />
+            </form>
+        </motion.div>
     );
 }
