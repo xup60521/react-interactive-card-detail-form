@@ -10,7 +10,7 @@ export default function CardBack({
                 className="bg-cover aspect-[447/245] relative rounded-lg overflow-hidden"
                 style={{ backgroundImage: `url(${BgCardBack})` }}
             >
-                <span className="absolute font-grotesk right-[12.5%] text-white font-bold text-[1.85vh] top-[44%]">{cvc}</span>
+                <span className="absolute font-grotesk right-[12.5%] text-white font-bold lg:text-[1.85vh] text-[3vw] top-[44%]">{cvc}</span>
             </div>
         </div>
     );

@@ -19,7 +19,7 @@ export default function Form({
 
     return (
         <motion.div
-            className="lg:w-[24rem]  absolute"
+            className="lg:w-[24rem] w-full absolute lg:p-0 pt-16 h-fit top-0 flex items-center lg:h-full"
             initial={{x: 30, opacity: 0}}
             animate={{x: 0, opacity: 1}}
             exit={{x: -30, opacity: 0}}
@@ -27,7 +27,7 @@ export default function Form({
         >
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col w-full lg:-translate-x-[10%]"
+                className="flex flex-col w-full lg:-translate-x-[10%] lg:p-0 p-4"
             >
                 <div className="flex flex-col relative">
                     <label
@@ -178,7 +178,7 @@ export default function Form({
                             </div>
                         </div>
                     </div>
-                    <div className="flex flex-col flex-grow relative">
+                    <div className="flex flex-col flex-grow relative min-w-0">
                         <label
                             htmlFor="cvc"
                             className="py-2 font-grotesk text-xs font-bold text-gray-500 tracking-widest"
@@ -205,7 +205,7 @@ export default function Form({
                             })}
                             maxLength={3}
                             minLength={3}
-                            className={`flex-grow outline-c_Dark_grayish_violet mb-8 font-grotesk rounded-lg border-[1px] px-4 py-2 ${
+                            className={`flex-grow min-w-0 outline-c_Dark_grayish_violet mb-8 font-grotesk rounded-lg border-[1px] px-4 py-2 ${
                                 "cvc" in errors
                                     ? "border-c_error_red"
                                     : "border-c_Light_grayish_violet"

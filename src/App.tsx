@@ -22,11 +22,11 @@ export default function App() {
                     name={name}
                     exp={exp}
                     cardNumber={cardNumber}
-                    className="translate-x-[30%] rounded-lg"
+                    className="lg:translate-x-[30%] lg:bottom-0 -bottom-12 z-10 lg:left-0 left-4 rounded-lg lg:relative absolute lg:w-full w-[77%]"
                 />
-                <CardBack className="translate-x-[50%] rounded-lg" cvc={cvc} />
+                <CardBack className="lg:translate-x-[50%] lg:right-0 right-4 rounded-lg lg:relative absolute lg:w-full w-[77%]" cvc={cvc} />
             </div>
-            <div className="lg:h-full flex items-center justify-center relative">
+            <div className="lg:h-full flex-grow flex items-center justify-center relative">
                 <AnimatePresence>
                     {!isComplete ? (
                         <Form
